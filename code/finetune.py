@@ -9,7 +9,7 @@ from datasets import load_dataset
 import transformers
 from peft import PeftModel
 
-from transformers import LlamaForCausalLM, LlamaTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import (
     prepare_model_for_int8_training,
     LoraConfig,
@@ -97,7 +97,7 @@ def generate_and_tokenize_prompt(data_point):
 
 def parse_config():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model_name", type=str, default="decapoda-research/llama-7b-hf")
+    parser.add_argument("--model_name", type=str, default="bigscience/bloomz")
     
     parser.add_argument("--from_ckpt", action="store_true")
     parser.add_argument("--ckpt_name", type=str)
@@ -126,7 +126,7 @@ if __name__ == '__main__':
     # -------------------------------------------------------------------------
     # optimized for RTX 4090. for larger GPUs, increase some of these?
     MICRO_BATCH_SIZE = 4  # this could actually be 5 but i like powers of 2
-    BATCH_SIZE = 128
+    BATCH_SIZE = 64
     GRADIENT_ACCUMULATION_STEPS = BATCH_SIZE // MICRO_BATCH_SIZE
     # EPOCHS = 6  # we don't always need 3 tbh
     LEARNING_RATE = 3e-4  # the Karpathy constant
@@ -148,13 +148,13 @@ if __name__ == '__main__':
     # -------------------------------------------------------------------------
 
     # main logic starts here
-    model = LlamaForCausalLM.from_pretrained(
+    model = AutoModelForCausalLM.from_pretrained(
         args.model_name,
         load_in_8bit=True,
         device_map=device_map,
         cache_dir=args.cache_dir
     )
-    tokenizer = LlamaTokenizer.from_pretrained(
+    tokenizer = AutoTokenizer.from_pretrained(
         args.model_name,
         add_eos_token=True,
         cache_dir=args.cache_dir
