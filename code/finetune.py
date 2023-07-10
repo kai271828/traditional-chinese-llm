@@ -97,7 +97,7 @@ def generate_and_tokenize_prompt(data_point):
 
 def parse_config():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model_name", type=str, default="openlm-research/open_llama_7b")
+    parser.add_argument("--model_name", type=str, default="openlm-research/open_llama_7b_v2")
     
     parser.add_argument("--from_ckpt", action="store_true")
     parser.add_argument("--ckpt_name", type=str)
