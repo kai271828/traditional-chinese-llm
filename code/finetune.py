@@ -150,6 +150,7 @@ if __name__ == '__main__':
     # main logic starts here
     model = LlamaForCausalLM.from_pretrained(
         args.model_name,
+        torch_dtype=torch.float16,
         load_in_8bit=True,
         device_map=device_map,
         cache_dir=args.cache_dir
