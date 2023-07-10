@@ -203,7 +203,7 @@ if __name__ == '__main__':
             warmup_steps=100,
             num_train_epochs=args.num_epoch,
             learning_rate=LEARNING_RATE,
-            fp16=True,
+            fp16=False,
             logging_steps=args.logging_steps,
             # evaluation_strategy="steps" if VAL_SET_SIZE > 0 else "no",
             save_strategy="steps",
